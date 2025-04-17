@@ -1,0 +1,83 @@
+﻿
+@model IEnumerable<DepartmentDto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All Departments</h1>
+<a asp-action="Create" asp-controller="Department" class="btn btn-primary my-3">Create Department</a>
+
+@if (Model.Any())
+{
+            <table class="table table-hover mt-2">
+      <thead class="text-center">
+        <tr>
+          <th scope="col">@Html.DisplayNameFor(m=>m.Code)</th>
+          <th scope="col">@Html.DisplayNameFor(m=>m.Name)</th>
+          <th scope="col">@Html.DisplayNameFor(m=>m.Description)</th>
+          <th scope="col">@Html.DisplayNameFor(m=>m.DateOfCreation)</th>
+  
+          <th scope="col">Details</th>
+          <th scope="col">Update</th>
+          <th scope="col">Delete</th>
+
+        </tr>
+      </thead>
+      <tbody>
+            @foreach(var department in Model)
+            {
+            <tr class="text-center">
+                  <td>@department.Code</td>
+                  <td>@department.Name</td>
+                  <td>@department.Description</td>
+                  <td>@department.DateOfCreation</td>
+
+                  @* Here *@
+
+                                          <partial name="_ButtonPartialView" model="department.DeptId"></partial>
+
+
+                 <td><a class="btn btn-danger" asp-controller="Department" asp-action="Delete" asp-route-Id="@department.DeptId"><i class="fas fa-trash mx-2"></i>Delete</a></td>
+
+
+                    <td>
+
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@department.DeptId">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                       //Delete Model
+                                       <div class="modal fade" id="deleteModal-@department.DeptId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Department @department.Name</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are You Sure to Delete this Department?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form method="post" asp-action="Delete" asp-controller="Department" asp-route-id="@department.DeptId" class="mt-4">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <input type="submit" value="Delete" class="btn btn-danger" />
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    </td>
+          </tr>
+                
+            }
+      </tbody>
+    </table>
+}
+else{
+
+
+    <div class="alart alart-info mt-2">No Departments Found!</div>
+
+
+
+
+}
